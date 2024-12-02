@@ -1,58 +1,43 @@
 #include "ex1.1.h"
 
-/*t_list *create_node(char *value, int index)
+int comp_lists(int *left_list, int *right_list)
 {
-	t_list	*node;
+	int i = 0;
+	int total = 0;
 
-	node->value = (int)value;
-	node->index = index;
-	node->prev = NULL;
-	node->next = NULL;
-
-	return (node);
-}
-
-void append_node(t_list *list, char *value, int index)
-{
-	list->next = create_node(value, index);
-	list->next->prev = list;
-	list = list->next;
-}
-
-t_list **init_lists(int lst_fd, t_list **lists)
-{
-    char	*line = NULL;
-	char	**split_line = NULL;
-	int		i = 1;
-
-	line = get_next_line(lst_fd);
-	split_line = split(line, ' ');
-	lists[0] = create_node(split_line[0], i);
-	lists[1] = create_node(split_line[1], i);
-	t_list	*left_head = lists[0];
-	t_list	*right_head = lists[1];
-	i++;
-
-	while (line)
+	while (i < 1000)
 	{
-		free (line);
-		line = get_next_line(lst_fd);
-		if (!line)
-			break ;
-		free(split_line[0]);
-		free(split_line[1]);
-		free(split_line);
-		split_line = split(line, ' ');
-		append_node(lists[0], split_line[0], i);
-		append_node(lists[1], split_line[1], i);
+		int diff = left_list[i] - right_list[i];
+		if (diff < 0)
+			diff *= -1;
+		total += diff;
 		i++;
 	}
 
-	lists[0] = left_head;
-	lists[1] = right_head;
-	return(lists);
+	return (total);
+}
 
-}*/
+void sort_list(int *list)
+{
+	int	i = 1;
+	int	aux = 0;
+
+	while (i < 1000)
+	{
+		int j = i;
+		while (list[j] < list[j - 1])
+		{
+			aux = list[j];
+			list[j] = list[j - 1];
+			list[j - 1] = aux;
+			if (j > 1)
+				j--;
+			else
+				break ;
+		}
+		i++;
+	}
+}
 
 void fill_lists(int *left_list, int *right_list, int lst_fd)
 {
@@ -108,6 +93,9 @@ int main()
     }
 
     fill_lists(left_list, right_list, lst_fd);
-	printf("%i, %i", left_list[0], right_list[1]);
+	sort_list(left_list);
+	sort_list(right_list);
+	printf("%i", comp_lists(left_list, right_list));
+
 	return (0);
 }
