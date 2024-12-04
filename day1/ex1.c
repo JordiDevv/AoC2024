@@ -1,4 +1,4 @@
-#include "ex1.1.h"
+#include "../jslib.h"
 
 static int similarity_score(int *left_list, int *right_list)
 {
