@@ -35,20 +35,15 @@ static int cast_line(int **report, char **split_line)
 
 static int check_report(int *report, int len)
 {
-    int i = 0;
-    int asc_flag = 0;
+    int i = 0, asc_flag = 0, diff = 0, ten = 0;
     int problem_dampener = 1;
-    if ((report[i + 1] - report[i] > 0 && report[i + 2] - report[i + 1] > 0)
-            || (report[i + 1] - report[i] > 0 && report[i + 3] - report[i + 2] > 0))
-        asc_flag = 1;
-    
-    int diff = report[i + 1] - report[i];
-    if (!((diff > 0 && diff < 4 && asc_flag) || (diff < 0 && diff > -4 && !asc_flag))
-            || diff == 0)
+
+    for (int i = 0; i < len - 1; i++)
     {
-        i++;
-        problem_dampener--;
+        diff = report[i + 1] - report[i];
+        ten += diff > 0 ? 1 : 0;
     }
+    asc_flag = ten > 0 ? 1 : 0;
 
     while (i < len - 1)
     {
@@ -62,16 +57,8 @@ static int check_report(int *report, int len)
                 diff = report[i + 2] - report[i];
                 if ((diff > 0 && diff < 4 && asc_flag) || (diff < 0 && diff > -4 && !asc_flag))
                 {
-                    i += 2;
+                    i++;
                     problem_dampener--;
-                    continue ;
-                }
-                diff = report[i + 1] - report[i - 1];
-                if ((diff > 0 && diff < 4 && asc_flag) || (diff < 0 && diff > -4 && !asc_flag))
-                {
-                    i += 2;
-                    problem_dampener--;
-                    continue ;
                 }
                 else
                     return (0);
