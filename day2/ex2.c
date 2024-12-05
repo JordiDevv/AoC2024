@@ -1,6 +1,6 @@
 #include "../jslib.h"
 
-static void get_next_line_splited(int input_fd, char **split_line)
+static void get_next_line_splited(int input_fd, char ***split_line)
 {
     char    *line = NULL;
 
@@ -10,30 +10,44 @@ static void get_next_line_splited(int input_fd, char **split_line)
         printf(R "Error getting next line" RE);
         exit(EXIT_FAILURE);
     }
-    split_line = ft_split(line, ' ');
+    *split_line = ft_split(line, ' ');
     free(line);
-    if (!split_line)
+    if (!*split_line)
     {
         printf(R "Error spliting one line" RE);
         exit(EXIT_FAILURE);
     }
 }
 
-static int check_report(char **split_line)
+static int cast_line(int **report, char **split_line)
+{
+    int i = 0;
+    int len = 0;
+
+    for (int i = 0; split_line[i]; i++)
+        len++;
+    *report = malloc(len * 4);
+    for (int i = 0; split_line[i]; i++)
+        (*report)[i] = atoi(split_line[i]);
+
+    return (len);
+}
+
+static int check_report(int *report, int len)
 {
     int i = 0;
     int asc_flag = 0;
-    if (split_line[i + 1] - split_line[i] > 0)
+    if (report[i + 1] - report[i] > 0)
         asc_flag = 1;
 
-    while (split_line[i + 1])
+    while (i < len - 1)
     {
-        int diff = split_line[i + 1] - split_line[i];
-        if ((diff > 0 && diff < 4 && asc_flag) || (diff < 0 && diff > -4 && !asc_flag))
-            i++;
-        else
+        int diff = report[i + 1] - report[i];
+        if (!((diff > 0 && diff < 4 && asc_flag) || (diff < 0 && diff > -4 && !asc_flag)))
             return (0);
+        i++;
     }
+
     return (1);
 }
 
@@ -47,15 +61,18 @@ int main()
     }
 
     char    **split_line = NULL;
+    int     *report;
     int     i = 0;
     int     safe_reports = 0;
 
     while (i < 1000)
     {
-        get_next_line_splited(input_fd, split_line);
-        safe_reports += check_report(split_line);
+        get_next_line_splited(input_fd, &split_line);
+        int len = cast_line(&report, split_line);
         i++;
-        free_mat(split_line, i);
+        free_mat(split_line, len);
+        safe_reports += check_report(report, len);
+        free(report);
     }
 
     printf(G "%i\n" RE, safe_reports);
