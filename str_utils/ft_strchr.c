@@ -1,3 +1,5 @@
+#include "../jslib.h"
+
 char	*ft_strchr(char *s, int c)
 {
 	int	i;
@@ -12,4 +14,20 @@ char	*ft_strchr(char *s, int c)
 	if ((char)c == 0)
 		return (&((char *)s)[i]);
 	return (0);
+}
+
+char	*ft_strrchr(const char *s, int c)
+{
+	char	*r;
+
+	r = (char *)s;
+	while (*s)
+		s++;
+	while (s >= r)
+	{
+		if (*s == (char)c)
+			return ((char *)s);
+		s--;
+	}
+	return (NULL);
 }

@@ -65,10 +65,42 @@ int main()
 
     char    *line = get_next_line(fd_input);
     int     result = 0;
+    char    *do_line = NULL;
+    int     enabled = 1;
+    int     flag = 0;
 
     while (line)
     {
-        result += get_line_result(line);
+        char *end = line;
+        while (line)
+            end++;
+        char *beg = end;
+        while (beg > line)
+        {
+            if (!ft_strrchr(beg, 'd'))
+            {
+                if (ft_strncmp(beg, "don't()", 7))
+                {
+                    end = beg;
+                    while (*end)
+                    {
+                        if (!ft_strchr(end, 'd'))
+                        {
+                            if (ft_strncmp(end, "do()", 4))
+                            {
+                                char *aux_beg = end;
+                                
+                            }
+                        }
+                    }
+
+                }
+            }
+            beg--;
+        }
+        do_line = ft_substr(line, beg - line, end - beg);
+        result += get_line_result(do_line);
+
         free(line);
         line = get_next_line(fd_input);
     }
