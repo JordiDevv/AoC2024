@@ -30,6 +30,7 @@ static int get_n_lines()
         }
         write(fd_pipe[1], &lines_counter, sizeof(lines_counter));
         close(child_fd_input);
+        exit(EXIT_SUCCESS);
     }
 
     wait(NULL);
