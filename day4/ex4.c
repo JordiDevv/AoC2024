@@ -56,6 +56,20 @@ static char **parse_input(int fd_input, int n_lines)
     return (input_mat);
 }
 
+static int check_xmas(char **input_mat, int i, int j, int n_lines)
+{
+    int return_value = 0;
+    int len = ft_strlen(input_mat[i]);
+
+    if (len - j >= 4)
+    {
+        if (input_mat[i][j + 1] == 'M' && input_mat[i][j + 2] == 'A' && input_mat[i][j + 3] == 'S')
+            return_value++;
+    }
+
+    return (return_value);
+}
+
 int main()
 {
     int fd_input = open("input_data_prueba.txt", O_RDONLY);
@@ -68,5 +82,13 @@ int main()
     int n_lines = get_n_lines();
     char **input_mat = parse_input(fd_input, n_lines);
 
+    int xmas_instances = 0;
+    for (int i = 0; input_mat[i]; i++)
+    {
+        for (int j = 0; input_mat[i][j]; j++)
+            if (input_mat[i][j] == 'X') xmas_instances += check_xmas(input_mat, i, j, n_lines);
+    }
+
+    printf(G "XMAS instances: %i\n" RE, xmas_instances);
     return (0);
 }
