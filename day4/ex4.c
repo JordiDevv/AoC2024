@@ -56,14 +56,55 @@ static char **parse_input(int fd_input, int n_lines)
     return (input_mat);
 }
 
-static int check_xmas(char **input_mat, int i, int j, int n_lines)
+static int check_xmas(char **input_mat, int i, int j, int n_lines, int len)
 {
     int return_value = 0;
-    int len = ft_strlen(input_mat[i]);
+    int pos[2];
+    pos[0] = i;
+    pos[1] = j;
 
+    //La idea es buscar la instancia necesaria en bucle, en todas direcciones, y que la \
+        función dedicada a eso devuelva un puntero que se almacenará en pos para buscar a \
+        partir de ahí la siguiente letra; o quizás se haga toda la búsqueda en una función \
+        auxiliar.
     if (len - j >= 4)
     {
         if (input_mat[i][j + 1] == 'M' && input_mat[i][j + 2] == 'A' && input_mat[i][j + 3] == 'S')
+            return_value++;
+    }
+    if (n_lines - i >= 4)
+    {
+        if (input_mat[i + 1][j] == 'M' && input_mat[i + 2][j] == 'A' && input_mat[i + 3][j] == 'S')
+            return_value++;
+    }
+    if (j >= 3)
+    {
+        if (input_mat[i][j - 1] == 'M' && input_mat[i][j - 2] == 'A' && input_mat[i][j - 3] == 'S')
+            return_value++;
+    }
+    if (i >= 3)
+    {
+        if (input_mat[i - 1][j] == 'M' && input_mat[i - 2][j] == 'A' && input_mat[i - 3][j] == 'S')
+            return_value++;
+    }
+    if (len - j >= 4 && n_lines - i >= 4)
+    {
+        if (input_mat[i + 1][j + 1] == 'M' && input_mat[i + 2][j + 2] == 'A' && input_mat[i + 3][j + 3] == 'S')
+            return_value++;
+    }
+    if (j >= 4 && n_lines - i >= 4)
+    {
+        if (input_mat[i + 1][j - 1] == 'M' && input_mat[i + 2][j - 2] == 'A' && input_mat[i + 3][j - 3] == 'S')
+            return_value++;
+    }
+    if (j >= 4 && i >= 4)
+    {
+        if (input_mat[i - 1][j - 1] == 'M' && input_mat[i - 2][j - 2] == 'A' && input_mat[i - 3][j - 3] == 'S')
+            return_value++;
+    }
+    if (len - j >= 4 && i >= 4)
+    {
+        if (input_mat[i - 1][j + 1] == 'M' && input_mat[i - 2][j + 2] == 'A' && input_mat[i - 3][j + 3] == 'S')
             return_value++;
     }
 
@@ -81,12 +122,13 @@ int main()
 
     int n_lines = get_n_lines();
     char **input_mat = parse_input(fd_input, n_lines);
+    int len = ft_strlen(input_mat[0]) - 1;
 
     int xmas_instances = 0;
     for (int i = 0; input_mat[i]; i++)
     {
         for (int j = 0; input_mat[i][j]; j++)
-            if (input_mat[i][j] == 'X') xmas_instances += check_xmas(input_mat, i, j, n_lines);
+            if (input_mat[i][j] == 'X') xmas_instances += check_xmas(input_mat, i, j, n_lines, len);
     }
 
     printf(G "XMAS instances: %i\n" RE, xmas_instances);
