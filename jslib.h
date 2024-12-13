@@ -24,6 +24,7 @@ size_t	ft_strlen(const char *s);
 char	*ft_substr(const char *s, unsigned int start, size_t len);
 char    *ft_strchr(char *s, int c);
 char	*ft_strrchr(const char *s, int c);
+char	*ft_strrnchr(const char *s, int c, char *beg);
 int     ft_strncmp(const char *s1, const char *s2, size_t n);
 
 #endif
