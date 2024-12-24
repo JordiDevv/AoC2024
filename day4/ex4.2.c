@@ -60,45 +60,30 @@ static int check_xmas(char **input_mat, int i, int j, int n_lines, int len)
 {
     int return_value = 0;
 
-    if (len - j >= 4)
+    if (len - j >= 3 && n_lines - i >= 3)
     {
-        if (input_mat[i][j + 1] == 'M' && input_mat[i][j + 2] == 'A' && input_mat[i][j + 3] == 'S')
+        if (input_mat[i + 1][j + 1] == 'A' && input_mat[i + 2][j + 2] == 'S')
+        {
+            if ((input_mat[i + 2][j] == 'M' && input_mat[i][j + 2] == 'S')
+                    || (input_mat[i + 2][j] == 'S' && input_mat[i][j + 2] == 'M'))
             return_value++;
+        }
     }
-    if (n_lines - i >= 4)
+    if (j >= 2 && n_lines - i >= 3)
     {
-        if (input_mat[i + 1][j] == 'M' && input_mat[i + 2][j] == 'A' && input_mat[i + 3][j] == 'S')
+        if (input_mat[i + 1][j - 1] == 'A' && input_mat[i + 2][j - 2] == 'S')
+        {
+            if (input_mat[i + 2][j] == 'M' && input_mat[i][j - 2] == 'S')
             return_value++;
+        }
     }
-    if (j >= 3)
+    if (len - j >= 3 && i >= 2)
     {
-        if (input_mat[i][j - 1] == 'M' && input_mat[i][j - 2] == 'A' && input_mat[i][j - 3] == 'S')
+        if (input_mat[i - 1][j + 1] == 'A' && input_mat[i - 2][j + 2] == 'S')
+        {
+            if (input_mat[i][j + 2] == 'M' && input_mat[i - 2][j] == 'S')
             return_value++;
-    }
-    if (i >= 3)
-    {
-        if (input_mat[i - 1][j] == 'M' && input_mat[i - 2][j] == 'A' && input_mat[i - 3][j] == 'S')
-            return_value++;
-    }
-    if (len - j >= 4 && n_lines - i >= 4)
-    {
-        if (input_mat[i + 1][j + 1] == 'M' && input_mat[i + 2][j + 2] == 'A' && input_mat[i + 3][j + 3] == 'S')
-            return_value++;
-    }
-    if (j >= 3 && n_lines - i >= 4)
-    {
-        if (input_mat[i + 1][j - 1] == 'M' && input_mat[i + 2][j - 2] == 'A' && input_mat[i + 3][j - 3] == 'S')
-            return_value++;
-    }
-    if (j >= 3 && i >= 3)
-    {
-        if (input_mat[i - 1][j - 1] == 'M' && input_mat[i - 2][j - 2] == 'A' && input_mat[i - 3][j - 3] == 'S')
-            return_value++;
-    }
-    if (len - j >= 4 && i >= 3)
-    {
-        if (input_mat[i - 1][j + 1] == 'M' && input_mat[i - 2][j + 2] == 'A' && input_mat[i - 3][j + 3] == 'S')
-            return_value++;
+        }
     }
 
     return (return_value);
@@ -121,9 +106,9 @@ int main()
     for (int i = 0; input_mat[i]; i++)
     {
         for (int j = 0; input_mat[i][j]; j++)
-            if (input_mat[i][j] == 'X') xmas_instances += check_xmas(input_mat, i, j, n_lines, len);
+            if (input_mat[i][j] == 'M') xmas_instances += check_xmas(input_mat, i, j, n_lines, len);
     }
 
-    printf(G "XMAS instances: %i\n" RE, xmas_instances);
+    printf(G "X-MAS instances: %i\n" RE, xmas_instances);
     return (0);
 }
