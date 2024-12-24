@@ -12,7 +12,7 @@ static int get_n_lines()
     int pid = fork();
     if (pid == 0)
     {
-        int child_fd_input = open("input_data_prueba.txt", O_RDONLY);
+        int child_fd_input = open("input_data.txt", O_RDONLY);
         if (child_fd_input < 0)
         {
             printf(R "Error opening the data file in the child process\n" RE);
@@ -63,10 +63,6 @@ static int check_xmas(char **input_mat, int i, int j, int n_lines, int len)
     pos[0] = i;
     pos[1] = j;
 
-    //La idea es buscar la instancia necesaria en bucle, en todas direcciones, y que la \
-        función dedicada a eso devuelva un puntero que se almacenará en pos para buscar a \
-        partir de ahí la siguiente letra; o quizás se haga toda la búsqueda en una función \
-        auxiliar.
     if (len - j >= 4)
     {
         if (input_mat[i][j + 1] == 'M' && input_mat[i][j + 2] == 'A' && input_mat[i][j + 3] == 'S')
@@ -92,17 +88,17 @@ static int check_xmas(char **input_mat, int i, int j, int n_lines, int len)
         if (input_mat[i + 1][j + 1] == 'M' && input_mat[i + 2][j + 2] == 'A' && input_mat[i + 3][j + 3] == 'S')
             return_value++;
     }
-    if (j >= 4 && n_lines - i >= 4)
+    if (j >= 3 && n_lines - i >= 4)
     {
         if (input_mat[i + 1][j - 1] == 'M' && input_mat[i + 2][j - 2] == 'A' && input_mat[i + 3][j - 3] == 'S')
             return_value++;
     }
-    if (j >= 4 && i >= 4)
+    if (j >= 3 && i >= 3)
     {
         if (input_mat[i - 1][j - 1] == 'M' && input_mat[i - 2][j - 2] == 'A' && input_mat[i - 3][j - 3] == 'S')
             return_value++;
     }
-    if (len - j >= 4 && i >= 4)
+    if (len - j >= 4 && i >= 3)
     {
         if (input_mat[i - 1][j + 1] == 'M' && input_mat[i - 2][j + 2] == 'A' && input_mat[i - 3][j + 3] == 'S')
             return_value++;
@@ -113,7 +109,7 @@ static int check_xmas(char **input_mat, int i, int j, int n_lines, int len)
 
 int main()
 {
-    int fd_input = open("input_data_prueba.txt", O_RDONLY);
+    int fd_input = open("input_data.txt", O_RDONLY);
     if (fd_input < 0)
     {
         printf(R "Error opening the data file\n" RE);
@@ -122,7 +118,7 @@ int main()
 
     int n_lines = get_n_lines();
     char **input_mat = parse_input(fd_input, n_lines);
-    int len = ft_strlen(input_mat[0]) - 1;
+    int len = ft_strlen(input_mat[0]);
 
     int xmas_instances = 0;
     for (int i = 0; input_mat[i]; i++)
