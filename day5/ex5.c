@@ -15,6 +15,22 @@ void parse_input(int *n_rules, int *n_updates, int ***rules, int ***updates, int
         free_mat(split_line, 2);
         split_line = ft_split(get_next_line(fd_input), '|');
     }
+
+    free_mat(split_line, 2);
+    *updates = malloc(sizeof(int*));
+    split_line = ft_split(get_next_line(fd_input), ',');
+
+    while (split_line)
+    {
+        (*n_updates)++;
+        *updates = realloc(*updates, sizeof(int*) * (*n_updates));
+        int update_len = charmatlen(split_line);
+        (*updates)[(*n_updates) - 1] = malloc(update_len * sizeof(int));
+        for (int i = 0; i < update_len; i++)
+            (*updates)[(*n_updates) - 1][i] = atoi(split_line[i]);
+        free_mat(split_line, 2);
+        split_line = ft_split(get_next_line(fd_input), ',');
+    }
 }
 
 int main()
