@@ -44,7 +44,7 @@ int get_middle_update(int *updates)
 
 int main()
 {
-    int fd_input = open("input_data_prueba.txt", O_RDONLY);
+    int fd_input = open("input_data.txt", O_RDONLY);
     if (fd_input < 0)
     {
         printf(R "Error opening the input file\n" RE);
@@ -66,13 +66,15 @@ int main()
                 if (rules[k][0] == updates[i][j + 1] && rules[k][1] == updates[i][j])
                 {
                     in_order = 0;
+                    int aux = updates[i][j];
+                    updates[i][j] = updates[i][j + 1];
+                    updates[i][j + 1] = aux;
+                    j = 0;
                     break ;
                 }
             }
-                if (!in_order)
-                    break ;
         }
-        if (in_order)
+        if (!in_order)
             result += get_middle_update(updates[i]);
     }
 
