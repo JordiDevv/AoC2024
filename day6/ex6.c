@@ -46,6 +46,23 @@ char **parse_map(int input_fd)
     return (map);
 }
 
+void init_guard_data(guard_data **guard, char **map)
+{
+    for (int i = 0; map[i]; i++)
+    {
+        for (int j = 0; map[i][j]; j++)
+        {
+            if (map[i][j] == '^' || map[i][j] == '>' || map[i][j] == '<'
+                    || map[i][j] == 'v')
+            {
+                (*guard)->x = j;
+                (*guard)->y = i;
+                (*guard)->dir = map[i][j];
+            }
+        }
+    }
+}
+
 int main()
 {
     int input_fd = open("input_map_prueba.txt", O_RDONLY);
@@ -57,5 +74,7 @@ int main()
 
     char **map = parse_map(input_fd);
 
-    //guard_data *guard = malloc(sizeof(guard_data));
+    guard_data *guard = malloc(sizeof(guard_data));
+    init_guard_data(&guard, map);
+    printf("x = %d\ny = %d\ndir = %c\n", guard->x, guard->y, guard->dir);
 }
