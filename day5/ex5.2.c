@@ -44,7 +44,7 @@ int get_middle_update(int *updates)
 
 int main()
 {
-    int fd_input = open("input_data.txt", O_RDONLY);
+    int fd_input = open("input_data_prueba.txt", O_RDONLY);
     if (fd_input < 0)
     {
         printf(R "Error opening the input file\n" RE);
