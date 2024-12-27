@@ -63,6 +63,47 @@ void init_guard_data(guard_data **guard, char **map)
     }
 }
 
+int move_guard(guard_data **guard, char **map)
+{
+    int cells_check = 0;
+    int i = 0;
+
+    if ((*guard)->dir == '^')
+    {
+        for (i = (*guard)->y; map[i - 1][(*guard)->x] && map[i - 1][(*guard)->x] != '#'; i--)
+            cells_check++;
+        if (map[i - 1][(*guard)->x] == '#')
+            (*guard)->dir = '>';
+        (*guard)->y = i;
+    }
+    else if ((*guard)->dir == '>')
+    {
+        for (i = (*guard)->x; map[(*guard)->y][i + 1] && map[(*guard)->y][i + 1] != '#'; i++)
+            cells_check++;
+        if (map[(*guard)->y][i + 1] == '#')
+            (*guard)->dir = 'v';
+        (*guard)->x = i;
+    }
+    else if ((*guard)->dir == 'v')
+    {
+        for (i = (*guard)->y; map[i + 1][(*guard)->x] && map[i + 1][(*guard)->x] != '#'; i++)
+            cells_check++;
+        if (map[i + 1][(*guard)->x] == '#')
+            (*guard)->dir = '<';
+        (*guard)->y = i;
+    }
+    else
+    {
+        for (i = (*guard)->x; map[(*guard)->y][i - 1] && map[(*guard)->y][i - 1] != '#'; i--)
+            cells_check++;
+        if (map[(*guard)->y][i - 1] == '#')
+            (*guard)->dir = '^';
+        (*guard)->x = i;
+    }
+
+    return (cells_check);
+}
+
 int main()
 {
     int input_fd = open("input_map_prueba.txt", O_RDONLY);
@@ -76,5 +117,17 @@ int main()
 
     guard_data *guard = malloc(sizeof(guard_data));
     init_guard_data(&guard, map);
-    printf("x = %d\ny = %d\ndir = %c\n", guard->x, guard->y, guard->dir);
+    
+    int cells_check = 1;
+    while(1)
+    {
+        if ((guard->dir == '^' && !map[guard->y - 1][guard->x]) || (guard->dir == '>' && !map[guard->y][guard->x + 1])
+                || (guard->dir == '<' && !map[guard->y][guard->x - 1]) || (guard->dir == 'v' && !map[guard->y + 1][guard->x]))
+            break ;
+        printf("%d\n", cells_check);
+        cells_check += move_guard(&guard, map);
+    }
+
+    printf(G "%d\n" RE, cells_check);
+    return (0);
 }
