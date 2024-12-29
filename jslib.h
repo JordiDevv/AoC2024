@@ -11,6 +11,7 @@
 # include <fcntl.h>
 # include <unistd.h>
 # include <sys/wait.h>
+# include <stdbool.h>
 # include "get_next_line/get_next_line.h"
 
 void	ft_bzero(void *s, size_t n);
