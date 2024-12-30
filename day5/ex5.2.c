@@ -12,11 +12,11 @@ void parse_input(int *n_rules, int *n_updates, int ***rules, int ***updates, int
         (*rules)[(*n_rules) - 1] = malloc(2 * sizeof(int));
         (*rules)[(*n_rules) - 1][0] = atoi(split_line[0]);
         (*rules)[(*n_rules) - 1][1] = atoi(split_line[1]);
-        free_mat(split_line, 2);
+        free_cmat(split_line, 2);
         split_line = ft_split(get_next_line(fd_input), '|');
     }
 
-    free_mat(split_line, 2);
+    free_cmat(split_line, 2);
     *updates = malloc(sizeof(int*));
     split_line = ft_split(get_next_line(fd_input), ',');
 
@@ -29,7 +29,7 @@ void parse_input(int *n_rules, int *n_updates, int ***rules, int ***updates, int
         for (int i = 0; i < update_len; i++)
             (*updates)[(*n_updates) - 1][i] = atoi(split_line[i]);
         (*updates)[(*n_updates) - 1][update_len] = 0;
-        free_mat(split_line, 2);
+        free_cmat(split_line, 2);
         split_line = ft_split(get_next_line(fd_input), ',');
     }
 }
@@ -63,14 +63,16 @@ int main()
         {
             for (int k = 0; k < n_rules; k++)
             {
-                if (rules[k][0] == updates[i][j + 1] && rules[k][1] == updates[i][j])
+                for (int l = j + 1; updates[i][l]; l++)
                 {
-                    in_order = 0;
-                    int aux = updates[i][j];
-                    updates[i][j] = updates[i][j + 1];
-                    updates[i][j + 1] = aux;
-                    j = 0;
-                    break ;
+                    if (rules[k][0] == updates[i][l] && rules[k][1] == updates[i][j])
+                    {
+                        in_order = 0;
+                        int aux = updates[i][j];
+                        updates[i][j] = updates[i][l];
+                        updates[i][l] = aux;
+                        l = j + 1;
+                    }
                 }
             }
         }
