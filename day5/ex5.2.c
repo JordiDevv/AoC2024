@@ -61,9 +61,9 @@ int main()
         int in_order = 1;
         for (int j = 0; updates[i][j + 1]; j++)
         {
-            for (int k = 0; k < n_rules; k++)
+            for (int l = 0; updates[i][l]; l++)
             {
-                for (int l = j + 1; updates[i][l]; l++)
+                for (int k = 0; k < n_rules; k++)
                 {
                     if (rules[k][0] == updates[i][l] && rules[k][1] == updates[i][j])
                     {
@@ -71,7 +71,7 @@ int main()
                         int aux = updates[i][j];
                         updates[i][j] = updates[i][l];
                         updates[i][l] = aux;
-                        l = j + 1;
+                        break ;
                     }
                 }
             }
