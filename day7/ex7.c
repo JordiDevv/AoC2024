@@ -54,19 +54,46 @@ void parse_input(long **tests, int ***calibrations, int fd_input, int *n_calibra
     *n_calibrations = i - 1;
 }
 
+int intlen(int n)
+{
+    int i = 0;
+    while (n > 0)
+    {
+        n /= 10;
+        i++;
+    }
+    return (i);
+}
+
 bool calibrated_test(int *calibration, int calibration_len, long test_result)
 {
-    int posibilities = pow(2, calibration_len - 1);
+    int posibilities = pow(3, calibration_len - 1);
 
     for (int mask = 0; mask < posibilities; mask++) 
     {
         long result = calibration[0];
+        int current_mask = mask;
 
         for (int i = 0; i < calibration_len - 1; i++) 
         {
-            int operation = (mask >> i) & 1;
+            int operation = current_mask % 3;
+            current_mask /= 3;
 
-            result = operation == 0 ? result + calibration[i + 1] : result * calibration[i + 1];
+            switch (operation)
+            {
+                case 0:
+                    result += calibration[i + 1];
+                    break ;
+                case 1:
+                    result *= calibration[i + 1];
+                    break ;
+                case 2:
+                    result *= pow(10, intlen(calibration[i + 1]));
+                    result += calibration[i + 1];
+                    break ;
+                default:
+                    break ;
+            }
         }
 
         if (result == test_result) return (true);
